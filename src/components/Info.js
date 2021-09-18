@@ -1,11 +1,39 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { GithubContext } from '../context/context';
 import styled from 'styled-components';
 import { GoRepo, GoGist } from 'react-icons/go';
 import { FiUsers, FiUserPlus } from 'react-icons/fi';
 
 const UserInfo = () => {
-  return <h2>user info component</h2>;
+  const {userData:{public_repos:repos,
+    public_gists:gists,
+    followers,
+    following}} = useContext(GithubContext);
+  const simpleInfo = [
+    {id:1,icon:<GoRepo />,count:repos,label:"repos",color: 'pink',},
+    {id:2,icon:<GoGist />,count:gists,label:"gists",color: 'green',},
+    {id:3,icon:<FiUsers />,count:followers,label:"followers",color: 'purple',},
+    {id:4,icon:<FiUserPlus />,count:following,label:"following",color: 'yellow',},
+  ]
+  return(
+<section className="section">
+  
+  <Wrapper className="section-center">
+    {simpleInfo.map(item=>{
+      const {id,icon,count,label,color}=item;
+      return (
+        <article key={id} className="item">
+      <span className={color}>{icon}</span>
+      <div>
+        <h3>{count}</h3>
+        <p>{label}</p>
+      </div>
+        </article>
+      )
+    })}    
+  </Wrapper>
+    </section>
+    )
 };
 
 const Wrapper = styled.section`
@@ -59,5 +87,6 @@ const Wrapper = styled.section`
     }
   }
 `;
+
 
 export default UserInfo;

@@ -1,9 +1,45 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { GithubContext } from '../context/context';
 import styled from 'styled-components';
+import { useAuth0 } from '@auth0/auth0-react';
+import Login from './Login';
+
 
 const Followers = () => {
-  return <h2>followers component</h2>;
+  const {userFollowers} = useContext(GithubContext);
+  const {isAuthenticated,isLoading} = useAuth0();
+  console.log(isAuthenticated,"hello")
+  console.log(isLoading,"loding")
+  const login = isAuthenticated ;
+
+  if(isLoading){
+    return <Wrapper>
+      <div className="followers">
+        <h1>Loading. . .</h1>
+      </div>
+    </Wrapper>
+  }
+    return (
+      <Wrapper>
+        <div className="followers">
+          {login ? (
+            userFollowers.map((item)=>{
+              const {login,id,avatar_url,html_url,}=item;
+              return (
+                <article key={id}>
+                  <img src={avatar_url} alt={login} />
+                  <div>
+                    <h4>{login}</h4>
+                    <a href={html_url}>{html_url.substr(18)}</a>
+                  </div>
+                </article>
+              );
+            })  
+          ):<Login/> }
+        </div>
+      </Wrapper>
+    
+    )
 };
 
 const Wrapper = styled.article`
